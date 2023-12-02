@@ -1,8 +1,8 @@
 :root {
    --f-spinner-width: 36px;
    --f-spinner-height: 36px;
-   --f-spinner-color-1: rgba(0, 0, 0, 0.1);
-   --f-spinner-color-2: rgba(17, 24, 28, 0.8);
+   --f-spinner-color-1: rgba(119, 112, 97, .35);
+   --f-spinner-color-2: rgba(119, 112, 97, 1);
    --f-spinner-stroke: 2.75;
 }
 .f-spinner {
@@ -421,8 +421,10 @@ html.with-fancybox body.hide-scrollbar {
    --fancybox-slide-gap: 10px;
    --f-spinner-width: 50px;
    --f-spinner-height: 50px;
-   --f-spinner-color-1: rgba(255, 255, 255, 0.1);
-   --f-spinner-color-2: #bbb;
+   --f-spinner-color-1: rgba(119, 112, 97, .35);
+   --f-spinner-color-2: rgba(119, 112, 97, 1);
+/*    --f-spinner-color-1: rgba(255, 255, 255, 0.1);
+   --f-spinner-color-2: #bbb; */
    --f-spinner-stroke: 3.65;
    position: fixed;
    top: 0;
