@@ -342,7 +342,7 @@
 
 
 .fancybox__nav .f-button.is-prev svg,
-.fancybox__nav .f-button.is-next svg {width: 3.75rem;height: 3.75rem;stroke: #999487;stroke-width: .35px;filter: none;}
+.fancybox__nav .f-button.is-next svg {width: 3.75rem;height: 3.75rem;stroke: #777061;stroke-width: .35px;filter: none;}
 
 .is-compact .fancybox__nav .f-button.is-prev svg,
 .is-compact .fancybox__nav .f-button.is-next svg {width: 3rem;height: 3rem;stroke: white;stroke-width: .7px;filter: none;}
@@ -355,9 +355,6 @@
    top: 50%;
    transform: translateY(-50%);
 }
-
-.is-horizontal .fancybox__nav .f-button.is-prev:hover,
-.is-horizontal .fancybox__nav .f-button.is-next:hover {background-color: #fcfcfae0;} 
 
 .is-horizontal .f-carousel__nav .f-button.is-prev,
 .is-horizontal .fancybox__nav .f-button.is-prev {
@@ -1112,12 +1109,12 @@ html.with-fancybox body.hide-scrollbar {
     background-color: white;
     --f-button-svg-width: 1.85rem;
     --f-button-svg-height: 1.85rem;
-    --f-button-svg-stroke-width: .7;
+    --f-button-svg-stroke-width: .85;
     position: absolute;
     z-index: 40;
-    border: .7px solid #999487;
+    border: .7px solid #777061;
     border-radius: 50%;
-    color: #999487;
+    color: #777061;
     right: 2.1rem;
     top: 1.55rem;
     }
@@ -1245,6 +1242,19 @@ html.with-fancybox body.hide-scrollbar {
 @media screen and (min-width: 579px) {
 
 .is-compact .fancybox__nav .f-button.is-prev svg, .is-compact .fancybox__nav .f-button.is-next svg 
-   {stroke: #999487}
+   {stroke: #777061}
    
+}
+
+@media screen and (min-width: 2300px) {
+
+.fancybox__toolbar__column.is-right .f-button {right: 10vw}
+
+   .is-horizontal .fancybox__nav .f-button.is-next {
+    right: 10vw}
+
+   .is-horizontal .fancybox__nav .f-button.is-prev {
+    left: 10vw;
+}  
+
 }
