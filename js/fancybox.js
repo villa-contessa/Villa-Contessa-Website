@@ -57,4 +57,21 @@ document.addEventListener("DOMContentLoaded", function () {
          }
       });
    });
+   // Beim Klick auf das 2. Hauptfoto einer Zimmerkategorie
+   // (Link mit der Class "zimmer-photos_fancybox-start")
+   // wird die Lightbox / Fancybox ebenfalls geöffnet:
+   var Links_Secondary_Fotos = document.querySelectorAll(".zimmer-photos_fancybox-start");
+   Links_Secondary_Fotos.forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        var zimmerPhotos = this.closest(".zimmer-photos");
+        // Hier wird eine NodeList aller .lightbox-link Elemente innerhalb des zimmerPhotos Elements geholt
+        var lightboxLinks = zimmerPhotos.querySelectorAll(".lightbox-link");
+        // Prüfen, ob mindestens zwei Links vorhanden sind
+        if (lightboxLinks.length >= 2) {
+            // Klicken auf den zweiten Link (Index 1)
+            lightboxLinks[1].click();
+        }
+      });
+   });
 });
