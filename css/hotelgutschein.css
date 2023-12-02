@@ -13,4 +13,20 @@
    display: none !important;
 }
 /* Die Preisanzeige für den Gutschein bleibt initial ausgeblendet, bis der Nutzer alle erforderlichen Optionen gewählt hat */
-[villa-custom-attribute="gutschein-number-of-nights"] {display: none;}
+[villa-custom-attribute="gutschein-preisanzeige"] {display: none;}
+
+/* Sonstige Styles */
+.validation-message::after {
+   bottom: 100%;
+   left: 17%;
+   border: solid transparent;
+   content: "";
+   height: 0;
+   width: 0;
+   position: absolute;
+   pointer-events: none;
+   border-color: rgba(136,183,213,0);
+   border-bottom-color: #f5f578;
+   border-width: 10px;
+   margin-left: -10px;
+}
