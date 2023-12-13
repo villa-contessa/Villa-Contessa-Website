@@ -1,11 +1,10 @@
 /* CSS Styles für die Custom Radio Buttons auf dieser Seite */
 .custom-radio-button.selected {
-   background-color: #2e315e;
-   color: white;
    transition: all 0.3s ease-in;
+   border-color: #777061;
 }
 /* Select Field Placeholder wird initial auf Text-Color: white gesetzt, um Flackern des Placeholder Textes zu verhindern*/
-.placeholder-text {
+[data-vc-shop-element="placeholder_roomcategory_addtocart"] {
    color: white;
 }
 /* CSS Styles, um das 1. Element im Dropdown-Menü ("Zimmerkategorie") auszublenden*/
@@ -30,3 +29,5 @@
    border-width: 10px;
    margin-left: -10px;
 }
+/* Die Option "Bitte wählen Sie!" wird ausgeblendet, damit diese Option nicht im Select Field auswählbar ist */
+[data-vc-shop-element="dropdown-roomcategory-section-zimmerinfos"] a.w-dropdown-link:first-of-type {display: none !important;}

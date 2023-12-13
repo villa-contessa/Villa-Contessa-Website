@@ -153,9 +153,10 @@ label.error::after {
    position: relative;
 }
 
-/*  Removes unwanted iOS form styling */ 
+/*  Removes unwanted iOS form styling */
 /* Set css appearance to none & border radius to 0 */
-input, textarea {
+input,
+textarea {
    border-radius: 0;
    -webkit-border-radius: 0;
    -webkit-appearance: none !important;
@@ -174,10 +175,19 @@ input::placeholder {
 /* removes the default spinner from input number fields */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   margin: 0;
 }
-.tippy-content {padding: 1.35rem; font-size: 1rem}
+
+input[type="number"] {
+   -moz-appearance: textfield;
+ }
+.tippy-content {
+   padding: 1.35rem;
+   font-size: 1rem;
+}
 
 .checkbox-icon svg {
    width: 100%;
@@ -186,10 +196,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* customization of the webflow slider */
 .w-slider-dot {
-   height: .7rem;
-   width: .7rem;
+   height: 0.7rem;
+   width: 0.7rem;
 }
-.w-slider-nav-invert>div.w-active {
+.w-slider-nav-invert > div.w-active {
    background-color: #777061;
 }
 
