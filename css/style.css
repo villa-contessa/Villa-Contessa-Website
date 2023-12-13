@@ -206,3 +206,9 @@ input[type="number"] {
 .w-slider-nav-invert > div {
    background-color: #cecece;
 }
+
+/* Für den Warenkorb: unerwünschter Cursor-/Focus-Effekt für das Anzahl-Input-Field wird deaktiviert */
+.w-commerce-commercecartquantity:focus {
+   outline: none; /* Entfernt den Fokus-Rand */
+   caret-color: transparent; /* Macht den Cursor unsichtbar */
+}
