@@ -1,0 +1,28 @@
+/* Damit bei den Floating Labels die dahinterliegenden Input Fields clickable bleiben: */
+.input-label {
+	pointer-events: none;
+}
+
+/* Beim Check-out wird der Cursor in den Text-Input-Fields animiert: */
+@keyframes blink {
+    from, to { caret-color: transparent; }
+    50% { caret-color: #979797 }
+ }
+ 
+ input[type="text"].input {
+    animation: blink 1.55s step-end infinite;
+ }
+
+/* Radio Buttons: */
+ .radio-btn:checked {
+   background-image: url(https://assets-global.website-files.com/5fd75a3e2aa1abd3e9c84632/637d14a8116aa1dac6cd4112_checked-mark-green.svg);
+   background-position: 50%;
+   background-repeat: repeat;
+   background-size: cover;
+   background-attachment: scroll;
+   border: 3px #025120
+}
+
+ /* Sonstige Styles */
+ .input {outline: none;}
+ .input-label.active .sternchen {display: none;} 

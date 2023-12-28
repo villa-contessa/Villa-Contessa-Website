@@ -212,3 +212,7 @@ input[type="number"] {
    outline: none; /* Entfernt den Fokus-Rand */
    caret-color: transparent; /* Macht den Cursor unsichtbar */
 }
+
+/* Style für Custom Element Buttons wird zurückgesetzt: */
+button {all:unset;
+cursor: pointer;}
