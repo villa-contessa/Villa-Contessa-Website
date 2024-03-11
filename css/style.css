@@ -1,5 +1,5 @@
 /* Make text look crisper and more legible in all browsers */
-p {
+body {
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
    font-smoothing: antialiased;
