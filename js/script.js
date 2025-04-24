@@ -1,7 +1,4 @@
-const cl = (data) => console.log(data);
-
 // sticky navbar
-
 window.addEventListener("scroll", () => {
    const nav = document.querySelector("#topnav");
    nav.classList.toggle("is--sticky", window.scrollY > 150);
@@ -55,26 +52,6 @@ Webflow.push(function () {
 
 // ***************************
 
-// Weglot functionality
-// close weglot function (wenn der Weglot Language Picker geöffnet ist und der Nutzer scrollt weiter auf der Seite, dann schließt sich der Language Picker wieder --> bessere UX)
-const closeWeglot = () => {
-   const weglotDd = document.querySelector(".weg-openleft");
-   if (weglotDd) {
-      weglotDd.click();
-   }
-};
-
-// close weglot on scroll
-window.addEventListener("scroll", () => {
-   closeWeglot();
-});
-
-// close weglot on outside click
-$("body").click(function () {
-   closeWeglot();
-});
-
-// ***************************
 
 // Für nicht Deutsch-sprachige Gäste wird OnePageBooking per default auf Englisch-sprachig gestellt
 $(document).ready(function () {
@@ -91,4 +68,33 @@ $(document).ready(function () {
          $(this).attr("href", newHref);
       });
    }
+});
+
+// Code für den Language Switcher
+var Webflow = Webflow || [];
+Webflow.push(function() {
+  var el = document.querySelector('[data-weglot="toggle-label"]');
+  if (!el) return;
+
+  function updateCode(lang) {
+    el.textContent = lang;
+		// Sobald Weglot fertig initialiert ist, erhält das Label des Language Switchers die Class "weglot-is-ready"
+    el.classList.add('weglot-is-ready');
+  }
+
+  // Initiales Setzen des Language Switcher Labels (wird aus dem lang-Attribut des HMTL-Tags ausgelesen) 
+  updateCode(document.documentElement.getAttribute('lang') || 'de');
+
+  // Label des Language Switcher wird beim Wechsel der Sprache gesetzt
+  if (window.Weglot && typeof Weglot.on === 'function') {
+    if (Weglot.initialized) {
+      updateCode(Weglot.getCurrentLang());
+    }
+    Weglot.on('initialized', function() {
+      updateCode(Weglot.getCurrentLang());
+    });
+    Weglot.on('languageChanged', function(newLang) {
+      updateCode(newLang);
+    });
+  }
 });
