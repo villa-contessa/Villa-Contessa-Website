@@ -1,6 +1,6 @@
 $(document).ready(function() {   
-    // Beim Hovern des Quote Sliders wird der Slider nicht mehr automatisch gestoppt
+    // Beim Hovern des Quote- und Testimonials-Sliders wird der Slider nicht mehr automatisch gestoppt
     setTimeout(function () {
-     $('.quotes-slider').unbind('mouseenter mouseleave touchstart');
-   })
-}); 
+        $('.quotes-slider, .testimonials_slider').unbind('mouseenter mouseleave touchstart');
+    });
+});
