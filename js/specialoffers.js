@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                var $popup = $('[data-id="popup_component"]');
                $popup.stop(true, true).css('display', 'none');
                // Display auf flex setzen, dann fadeIn verwenden
-               $popup.css('display', 'flex').hide().fadeIn(805);
+               $popup.css('display', 'flex').hide().fadeIn(800);
             } else {
                // Fallback ohne jQuery: Transition + Reflow erzwingen
                popup.style.display = 'flex';
