@@ -51,15 +51,21 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
          const popup = document.querySelector('[data-id="popup_component"]');
          if (popup) {
-            // Zuerst das Popup verstecken und Transition vorbereiten
-            popup.style.display = "flex";
-            popup.style.opacity = "0";
-            popup.style.transition = "opacity 850ms";
-
-            // Kurze Verzögerung, damit die Transition greifen kann
-            setTimeout(() => {
-               popup.style.opacity = "1";
-            }, 10);
+            // jQuery bevorzugt: weiches Fade-in mit 805ms, Display bleibt flex
+            if (window.jQuery) {
+               var $popup = $('[data-id="popup_component"]');
+               $popup.stop(true, true).css('display', 'none');
+               // Display auf flex setzen, dann fadeIn verwenden
+               $popup.css('display', 'flex').hide().fadeIn(805);
+            } else {
+               // Fallback ohne jQuery: Transition + Reflow erzwingen
+               popup.style.display = 'flex';
+               popup.style.opacity = '0';
+               popup.style.transition = 'opacity 805ms ease';
+               // Reflow erzwingen, damit die Transition sicher greift
+               void popup.offsetHeight; // eslint-disable-line no-unused-expressions
+               popup.style.opacity = '1';
+            }
          }
          setStorage("PopupAlreadyShown", "true");
       }, 5000);
