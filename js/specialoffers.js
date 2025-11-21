@@ -1,3 +1,7 @@
+/** 
+ * Dieses Script verwenden wir für das Einblenden des Popups mit dem Hinweis auf unsere aktuellen Saison-Angebpte. 
+ */
+
 // Zunächst definieren wir ein paar Hilfsfunktionen, die wir benötigen, um sicherzustellen, dass das Popup nur einmal pro 21 Tagen angezeigt wird.
 function setCookie(name, value, days) {
     let expires = "";
@@ -29,46 +33,37 @@ function setSmartStorage(key, value, days) {
         value: value,
         expiry: now.getTime() + (days * 24 * 60 * 60 * 1000),
     };
-
     let saved = false;
 
-    // 1. Versuch: LocalStorage
+     // 1. Versuch: LocalStorage
     try {
         localStorage.setItem(key, JSON.stringify(item));
         saved = true;
-    } catch (e) {
-        // Still failen, weiter zu Cookie
-    }
+    } catch (e) {}
 
     // 2. Versuch: Cookie
     if (!saved) {
         try {
             setCookie(key, value, days); 
             saved = true;
-        } catch (e) {
-           // Still failen, weiter zu SessionStorage
-        }
+        } catch (e) {}
     }
 
-    // 3. Versuch: SessionStorage (Nur für aktuellen Tab)
+    // 3. Versuch: SessionStorage
     if (!saved) {
         try {
             sessionStorage.setItem(key, "true");
-        } catch (e) {
-            console.log("Browser blockiert jegliches Speichern.");
-        }
+        } catch (e) {}
     }
 }
 
 // Intelligente Lesefunktion
 function getSmartStorage(key) {
-    // 1. Check LocalStorage
     try {
         const itemStr = localStorage.getItem(key);
         if (itemStr) {
             const item = JSON.parse(itemStr);
             const now = new Date();
-            // Prüfen ob abgelaufen (bei LocalStorage muss man das manuell prüfen)
             if (now.getTime() > item.expiry) {
                 localStorage.removeItem(key);
                 return null;
@@ -77,11 +72,9 @@ function getSmartStorage(key) {
         }
     } catch(e) {}
 
-    // 2. Check Cookie
     const cookieVal = getCookie(key);
     if (cookieVal) return cookieVal;
 
-    // 3. Check SessionStorage
     try {
         const sessionVal = sessionStorage.getItem(key);
         if (sessionVal) return sessionVal;
@@ -94,8 +87,9 @@ function getSmartStorage(key) {
 document.addEventListener("DOMContentLoaded", function () {
     
     // KONFIGURATION
-    const DAYS_TO_WAIT = 14; // 14-Tage Frist (das Popup wird nur alle 14 Tage angezeigt und nur dann, wenn der Nutzer die Angebotsseite noch nie besucht hat)
-    const POPUP_SELECTOR = '[data-id="popup_component"]'; // Dein Webflow Attribut
+    // Einstellen der 14-Tage Frist (das Popup wird nur alle 14 Tage angezeigt und nur dann, wenn der Nutzer die Angebotsseite noch nie besucht hat)
+    const DAYS_TO_WAIT = 14; 
+    const POPUP_SELECTOR = '[data-id="popup_component"]'; 
     
     const currentPagePath = window.location.pathname;
 
@@ -104,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setSmartStorage("SpecialPageVisited", "true", DAYS_TO_WAIT);
     }
 
-    // B) Status abrufen (hat der Nutzer die Angebotsseite bereits besucht? und hat das Popup bereits angezeigt?)
+   // B) Status abrufen (hat der Nutzer die Angebotsseite bereits besucht? und hat das Popup bereits angezeigt?)
     const specialPageVisited = getSmartStorage("SpecialPageVisited");
     const popupAlreadyShown = getSmartStorage("PopupAlreadyShown");
 
@@ -119,15 +113,15 @@ document.addEventListener("DOMContentLoaded", function () {
             const popup = document.querySelector(POPUP_SELECTOR);
             
             if (popup) {
-                // Sichtbar machen (Animation via CSS Transition)
+                 // Popup einblenden (Animation via CSS Transition)
                 popup.style.opacity = '0';
-                popup.style.display = 'flex';
+                popup.style.display = 'flex'; // Jetzt ist es im DOM, aber unsichtbar
                 
-                // Kleiner Trick, damit der Browser den Display-Wechsel registriert vor dem Fade
-                requestAnimationFrame(function() {
+                // Kleiner Timeout (50ms), damit Chrome das "display: flex" realisiert
+                setTimeout(function() {
                     popup.style.transition = 'opacity 800ms ease';
                     popup.style.opacity = '1';
-                });
+                }, 50);
 
                 // Das Popup wurde angezeigt, also merken wir uns das sofort für die Zukunft (21 Tage gültig)
                 setSmartStorage("PopupAlreadyShown", "true", DAYS_TO_WAIT);
