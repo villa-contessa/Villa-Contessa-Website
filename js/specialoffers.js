@@ -1,8 +1,7 @@
-/** 
- * Dieses Script verwenden wir für das Einblenden des Popups mit dem Hinweis auf unsere aktuellen Saison-Angebpte. 
+/** * Dieses Script verwenden wir für das Einblenden des Popups mit dem Hinweis auf unsere aktuellen Saison-Angebote. 
  */
 
-// Zunächst definieren wir ein paar Hilfsfunktionen, die wir benötigen, um sicherzustellen, dass das Popup nur einmal pro 21 Tagen angezeigt wird.
+// Zunächst definieren wir ein paar Hilfsfunktionen, die wir benötigen, um sicherzustellen, dass das Popup nur einmal pro 14 Tagen angezeigt wird.
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -10,8 +9,8 @@ function setCookie(name, value, days) {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    // SameSite=Strict und Secure für Sicherheit
-    document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict; Secure";
+    // SameSite=Lax ist besser für Besucher von externen Links (Google/Newsletter), Secure für Sicherheit
+    document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Lax; Secure";
 }
 
 // Hilfsfunktion: Cookie lesen (Fallback für Vanilla JS)
@@ -114,6 +113,11 @@ document.addEventListener("DOMContentLoaded", function () {
             
             if (popup) {
                  // Popup einblenden (Animation via CSS Transition)
+                
+                // Sicherheitsnetz: Z-Index hochsetzen, damit es sicher über der Navi liegt
+                popup.style.zIndex = '9999'; 
+                popup.style.visibility = 'visible';
+
                 popup.style.opacity = '0';
                 popup.style.display = 'flex'; // Jetzt ist es im DOM, aber unsichtbar
                 
@@ -123,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     popup.style.opacity = '1';
                 }, 50);
 
-                // Das Popup wurde angezeigt, also merken wir uns das sofort für die Zukunft (21 Tage gültig)
+                // Das Popup wurde angezeigt, also merken wir uns das sofort für die Zukunft (14 Tage gültig)
                 setSmartStorage("PopupAlreadyShown", "true", DAYS_TO_WAIT);
             }
         }, 5000); 
