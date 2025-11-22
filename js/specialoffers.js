@@ -91,18 +91,19 @@ document.addEventListener("DOMContentLoaded", function () {
     
     const currentPagePath = window.location.pathname;
 
-    // A) Hat der Nutzer die Angebotsseite bereits besucht? -> Merken!
-    if (currentPagePath.includes("/hotel/angebote")) {
+    // A) Befindet sich der Nutzer im Ordner /angebote (oder auf /hotel/angebote)? -> Merken!
+    // Wir prüfen hier generell auf "/angebote", das deckt "/hotel/angebote" und "/angebote/xyz" ab.
+    if (currentPagePath.includes("/angebote")) {
         setSmartStorage("SpecialPageVisited", "true", DAYS_TO_WAIT);
     }
 
-   // B) Status abrufen (hat der Nutzer die Angebotsseite bereits besucht? und hat das Popup bereits angezeigt?)
+   // B) Status abrufen (hat der Nutzer eine Angebotsseite bereits besucht? und hat das Popup bereits angezeigt?)
     const specialPageVisited = getSmartStorage("SpecialPageVisited");
     const popupAlreadyShown = getSmartStorage("PopupAlreadyShown");
 
     // C) Prüfung: Soll Popup angezeigt werden?
-    // Bedingung: Der Nutzer ist NICHT auf der Angebotsseite UND das Popup wurde noch NICHT gezeigt UND die Angebotsseite wurde noch nicht besucht
-    if (!currentPagePath.includes("/hotel/angebote") && 
+    // Bedingung: Der Nutzer ist NICHT im Ordner /angebote UND das Popup wurde noch NICHT gezeigt UND eine Angebotsseite wurde noch nicht besucht
+    if (!currentPagePath.includes("/angebote") && 
         popupAlreadyShown !== "true" && 
         specialPageVisited !== "true") {
 
