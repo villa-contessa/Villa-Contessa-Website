@@ -1,5 +1,4 @@
-/** * Dieses Script verwenden wir für das Einblenden des Popups mit dem Hinweis auf unsere aktuellen Saison-Angebote. 
- */
+/* Dieses Script verwenden wir für das Einblenden des Popups mit dem Hinweis auf unsere aktuellen Saison-Angebote. */
 
 // Zunächst definieren wir ein paar Hilfsfunktionen, die wir benötigen, um sicherzustellen, dass das Popup nur einmal pro 14 Tagen angezeigt wird.
 function setCookie(name, value, days) {
