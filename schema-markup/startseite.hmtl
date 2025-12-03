@@ -1,0 +1,153 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Villa Contessa - 5 Sterne Superior Hotel & Luxury Spa Hideaway",
+  "headline": "Ein wunderschönes 5 Sterne Superior Hotel & Spa Hideaway in traumhafter Lage am Ufer des Scharmützelsees - in Bad Saarow (nur 50 Minuten von Berlin entfernt)",
+  "description": "Das Villa Contessa Resort ist wunderschönes 5 Sterne Superior Hotel & Luxury Spa Hideaway in traumhafter Lage am Ufer des Scharmützelsees - im idyllischen Bad Saarow, circa 50 Minuten von Berlin entfernt. Eingebettet in eine malerische Naturlandschaft, verfügt das kleine Luxushotel über insgesamt 14 Zimmer & Suiten, einen luxuriösen Spa und ein wunderbares Restaurant mit fantasievoller, moderner Cuisine. Der legendäre ‚Michelin Guide‘ hat das Villa Contessa Resort mit 2 Michelin Keys als eines der besten Hotels in Deutschland ausgezeichnet. Der renommierte ‚Falstaff Guide‘ empfiehlt das Villa Contessa Resort ebenfalls als eines der besten Hotels in Deutschland. Liebevoll geführt von mehreren Familiengenerationen, ist das kleine Villa Contessa Resort ein echter Geheimtipp für alle Reisenden, die besondere Hotels lieben.",
+  "url": "https://www.villa-contessa.de",
+  "inLanguage": "de",
+  
+  "primaryImageOfPage": [
+    {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/5fd75a3e2aa1abd3e9c84632/69247ec252e5e95cd1980f41_luxushotel-villa-contessa-bad-saarow-16x9.webp",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/5fd75a3e2aa1abd3e9c84632/69247eca5c94f3f51ff22bb3_luxushotel-villa-contessa-bad-saarow-4x3.webp",
+      "width": 1440,
+      "height": 1080
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.website-files.com/5fd75a3e2aa1abd3e9c84632/69247eb63252040cd7e34331_luxushotel-villa-contessa-bad-saarow-1x1.webp",
+      "width": 1200,
+      "height": 1200
+    }
+  ],
+
+  "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://www.villa-contessa.de/#website",
+    "name": "Villa Contessa - 5 Sterne Superior Hotel & Luxury Spa Hideaway - Bad Saarow",
+    "url": "https://www.villa-contessa.de"
+  },
+
+  "mainEntity": {
+    "@type": "Hotel",
+    "@id": "https://www.villa-contessa.de/#hotel",
+    "name": "Villa Contessa - Luxury Spa Hotel",
+    "description": "Das 5 Sterne Superior Hotel Villa Contessa ist ein wunderschönes kleines Luxushotel & Spa Hideaway - in traumhafter Lage am Ufer des Scharmützelsees, im idyllischen Bad Saarow (nur 50 Minuten von Berlin entfernt). Das kleine Luxushotel verfügt über 14 Zimmer & Suiten, einen luxuriösen Spa und ein wunderbares Restaurant. Liebevoll geführt von mehreren Familiengenerationen, ist das kleine Hotel Villa Contessa Resort ein echter Geheimtipp für Reisende, die besondere Hotels lieben.",
+    "slogan": "Villa Contessa - Luxury Spa Hotel",
+    "foundingDate": "1910",
+    "url": "https://www.villa-contessa.de",
+    "hasMap": "https://maps.app.goo.gl/m6V3hZ9BwtNLtG7JA",
+    "telephone": "+493363158018",
+    "email": "info@villa-contessa.de",
+    "priceRange": "239 € - 1.599 € pro Nacht",
+    "numberOfRooms": 14,
+    "currenciesAccepted": "EUR",
+    "paymentAccepted": ["Cash", "Credit Card", "Visa", "Mastercard", "American Express", "EC-Card"],
+    "checkinTime": "15:00",
+    "checkoutTime": "11:00",
+    
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+493363158018",
+        "contactType": "reservations",
+        "areaServed": "DE",
+        "availableLanguage": ["de", "en"]
+    },
+    
+    "image": [
+      {
+        "@type": "ImageObject",
+        "url": "https://cdn.prod.website-files.com/5fd75a3e2aa1abd3e9c84632/69247ec252e5e95cd1980f41_luxushotel-villa-contessa-bad-saarow-16x9.webp",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "@type": "ImageObject",
+        "url": "https://cdn.prod.website-files.com/5fd75a3e2aa1abd3e9c84632/69247eca5c94f3f51ff22bb3_luxushotel-villa-contessa-bad-saarow-4x3.webp",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "@type": "ImageObject",
+        "url": "https://cdn.prod.website-files.com/5fd75a3e2aa1abd3e9c84632/69247eb63252040cd7e34331_luxushotel-villa-contessa-bad-saarow-1x1.webp",
+        "width": 1200,
+        "height": 1200
+      }
+    ],
+
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Seestraße 18",
+      "addressLocality": "Bad Saarow",
+      "postalCode": "15526",
+      "addressRegion": "Brandenburg",
+      "addressCountry": "DE"
+    },
+
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 52.291082046324405,
+      "longitude": 14.05690218612014
+    },
+
+    "sameAs": [
+      "https://www.facebook.com/hotelvillacontessa",
+      "https://www.instagram.com/villacontessa",
+      "https://www.threads.com/@villacontessa",
+      "https://www.tiktok.com/@villacontessa"
+    ],
+
+    "award": [
+      "2 Michelin Keys",
+      "Falstaff Spa Award",
+      "Falstaff Hotel Guide - Best of Germany"
+    ],
+
+    "starRating": {
+      "@type": "Rating",
+      "ratingValue": 5,
+      "bestRating": 5
+    },
+
+      "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Spa", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Pool", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Whirlpool", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Bio-Sauna", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Finnische Sauna", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Dampfbad", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Massagen", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Kosmetik", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Beauty-Behandlungen", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Fine Dining Restaurant", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Vegetarische Speisen", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Frühstück", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Zimmerservice", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Concierge", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Chauffeur-Service", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Housekeeping-Service", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Hotelbar", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Direkt am See", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Ruhige Lage", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Seeblick", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Garten", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Terrasse", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Suiten", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Kostenfreies WLAN", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "E-Ladestation", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Allergikerfreundlich", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Parkplatz", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Klimaanlage", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Fahrradverleih", "value": true }
+      ]
+  }
+}
+</script>
