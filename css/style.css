@@ -60,21 +60,6 @@ select{
 #topnav.is--sticky a.logo {
   transform: scale(0.7);
 }
-
-
-/* =============================== */
-
-/* Für den Weglot Language Switcher */
-
-  /* Um ein Flackern beim Umstellen der Sprache zu vermeiden, ist das Label des Language Switcher zunächst auf die Font-Farbe "weiß" eingestellt (wenn Englisch als Sprache eingestellt ist) und wird dann - sobald alle Weglot Scripts vollständig geladen wurden - mit einer CSS-Transition zurück zur Standard-Font-Farbe gewechselt. */
-  [data-weglot="toggle-label"] {
-    transition: color 0.3s ease-in-out;
-  }
-  html[lang="en"] [data-weglot="toggle-label"] {color: #fff;}
-  html[lang="en"] [data-weglot="toggle-label"].weglot-is-ready {color: inherit;}
-  
-  
-  /* =============================== */
  
 @media screen and (max-width: 991px) and (min-width: 768px) {
 

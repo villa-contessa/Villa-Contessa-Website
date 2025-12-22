@@ -69,32 +69,3 @@ $(document).ready(function () {
       });
    }
 });
-
-// Code für den Language Switcher
-var Webflow = Webflow || [];
-Webflow.push(function() {
-  var el = document.querySelector('[data-weglot="toggle-label"]');
-  if (!el) return;
-
-  function updateCode(lang) {
-    el.textContent = lang;
-		// Sobald Weglot fertig initialiert ist, erhält das Label des Language Switchers die Class "weglot-is-ready"
-    el.classList.add('weglot-is-ready');
-  }
-
-  // Initiales Setzen des Language Switcher Labels (wird aus dem lang-Attribut des HMTL-Tags ausgelesen) 
-  updateCode(document.documentElement.getAttribute('lang') || 'de');
-
-  // Label des Language Switcher wird beim Wechsel der Sprache gesetzt
-  if (window.Weglot && typeof Weglot.on === 'function') {
-    if (Weglot.initialized) {
-      updateCode(Weglot.getCurrentLang());
-    }
-    Weglot.on('initialized', function() {
-      updateCode(Weglot.getCurrentLang());
-    });
-    Weglot.on('languageChanged', function(newLang) {
-      updateCode(newLang);
-    });
-  }
-});
