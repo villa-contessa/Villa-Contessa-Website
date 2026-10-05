@@ -56,16 +56,24 @@ Webflow.push(function () {
 // Für nicht Deutsch-sprachige Gäste wird OnePageBooking per default auf Englisch-sprachig gestellt
 $(document).ready(function () {
    // Überprüfung, welcher Language-Tag für die Seite gesetzt ist
-   var language = document.documentElement.lang;
+   var language = document.documentElement.lang.toLowerCase();
+
+  // Deutsche Seiten unverändert lassen, einschließlich de-DE.
+  if (language === "de" || language.startsWith("de-")) return;
+
    // Wenn der Wert / die Language nicht "de" ist, dann werden die Links geändert (Verlinkung auf die englisch-sprachige Version von OnePageBooking)
-   if (language !== "de") {
-      $("a[href='https://onepagebooking.com/villa-contessa']").each(function () {
-         $(this).attr("href", "https://onepagebooking.com/villa-contessa?lang=en");
-      });
-      $("a[href*='https://onepagebooking.com/villa-contessa/packages/']").each(function () {
-         // Ersetzen Sie "de" durch "en" im Link
-         var newHref = $(this).attr("href").replace("?lang=de", "?lang=en");
-         $(this).attr("href", newHref);
-      });
-   }
+   $("a[href^='https://onepagebooking.com/villa-contessa']").each(function () {
+      var url = new URL(this.href);
+  
+      if (
+        url.origin === "https://onepagebooking.com" &&
+        (url.pathname === "/villa-contessa" ||
+          url.pathname.startsWith("/villa-contessa/"))
+      ) {
+        // Sprachparameter ergänzen oder vorhandenen Wert ersetzen.
+        url.searchParams.set("lang", "en");
+        this.href = url.href;
+      }
+    });
+
 });
