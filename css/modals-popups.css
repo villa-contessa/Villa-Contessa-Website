@@ -1,0 +1,73 @@
+/*!
+ * Villa Contessa – Modals & Popups, Version 1.2.0
+ * Ergänzt Webflow-Klassen für native dialog-Elemente.
+ * Extern als Stylesheet im Head laden, zusammen mit modals-popups.js.
+ * Bestehende Finsweet-Modals auf div-Elementen bleiben unberührt.
+ */
+
+/* Überarbeitet auf Basis der Claude-Version, 8. Oktober 2026. */
+/* Browser-Standard des dialog-Elements zurücksetzen: volle Fläche wie bisher .modal_popup */
+dialog.modal_popup {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: inherit;
+  --vc-info-dauer: 0.3s; /* Dauer für sanftes Ein- und Ausblenden – hier anpassen */
+}
+
+/* .modal_popup steht in Webflow auf display: none – geöffnet wird über das [open]-Attribut */
+dialog.modal_popup[open] {
+  display: flex;
+  animation: vc-info-ein var(--vc-info-dauer) ease-out;
+}
+dialog.modal_popup:not([open]) {
+  display: none;
+}
+
+/* Sanftes Ausblenden: das Script setzt .is-closing und schließt nach dem Ende der Animation */
+dialog.modal_popup.is-closing {
+  animation: vc-info-aus var(--vc-info-dauer) ease-in forwards;
+}
+
+/* Die Abdunklung liefert bereits die Hintergrundfarbe von .modal_popup */
+dialog.modal_popup::backdrop {
+  background: transparent;
+}
+
+/* Seite dahinter nicht scrollen, solange ein Dialog offen ist */
+html:has(dialog.modal_popup[open]) {
+  overflow: hidden;
+}
+
+/* Bestehende Webflow-Klassen haben Vorrang vor diesem Button-Grundstil. */
+:where(button[data-vc-info-open], button[data-vc-modal-open], button[data-vc-info-close]) {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+:where(button[data-vc-info-open], button[data-vc-modal-open], button[data-vc-info-close]):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+@keyframes vc-info-ein {
+  from { opacity: 0; }
+}
+@keyframes vc-info-aus {
+  to { opacity: 0; }
+}
+
+/* Besucher, die im Betriebssystem „Bewegung reduzieren" gewählt haben: ohne Animation */
+@media (prefers-reduced-motion: reduce) {
+  dialog.modal_popup[open],
+  dialog.modal_popup.is-closing { animation: none; }
+}
