@@ -1,18 +1,19 @@
 /*!
  * Villa Contessa – Modals & Popups, Version 2.0.0
- * Mit diesem Script stellen wir Modals / Popups für unserer Website bereit.
+ * Mit diesem Script stellen wir Modals / Popups für unsere Website bereit.
  * Hierbei verwenden wir das native Dialog-Element (HTML 5).
- * Unser Modal- / Popup-Lösung kann sowohl für CMS-Inhalte als auch für normale, statische Inhalte verwendet werden.
+ * Unsere Modal- / Popup-Lösung kann sowohl für CMS-Inhalte als auch für normale, statische Inhalte verwendet werden.
  *
- * Gemeinsame Gruppe: data-vc-modal-group="true" auf dem umgebenden Element.
- * CMS-Rich-Text: data-vc-modal-cms-richtext="true"; Platzhalter exakt {{1}}.
- * Dialog: data-vc-modal-name="1"; Inhalt an das gewünschte CMS-Feld binden.
- *
- * Button/Link: data-vc-modal-open="1" oder "spa-details";
- * der Dialog trägt denselben Wert als data-vc-modal-name.
+ * Folgende grundlegende Elemente verwenden wir für die Darstellung von Modals / Popups:
+ * Gruppierung des Elements, dass die Modals beinhaltet: data-vc-modal-group="true"
+ * CMS-Rich-Text mit Platzhaltern für Info-Buttons (z.B. {{1}}): data-vc-modal-cms-richtext="true"
+ * Modal / Popup selbst (HTML-Element "Dialog"): data-vc-modal-name="1" *
+ * Button/Link zum Öffnen des Modals / Popups: data-vc-modal-open="1" oder "spa-details";
+ * das Modal / Popup trägt hierbei denselben Wert als data-vc-modal-name.
  * Namen dürfen in unterschiedlichen Gruppen wiederholt werden.
- * Schließen: data-vc-modal-close="true"; Hintergrund: data-vc-modal-backdrop="true".
- * Alle Dialoge behalten die Webflow-Klasse modal_popup.
+ * Schließen: data-vc-modal-close="true";
+ * Hintergrund des Modals / Popuos: data-vc-modal-backdrop="true".
+ * Alle Modals / Popuos haben die Webflow CSS Class "modal_popup".
  */
 (function () {
   'use strict';
@@ -26,7 +27,7 @@
   var SKIP_TAGS = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, CODE: 1, KBD: 1, PRE: 1, A: 1, BUTTON: 1 };
 
   // Exakt {{n}}: positive Zahl, keine Leerzeichen und keine führenden Nullen.
-  // Die Nummer wird als Zeichenfolge verarbeitet; keine Begrenzung auf 99.
+  // Die Nummer wird als Zeichenfolge verarbeitet.
   var PLACEHOLDER_SRC = '\\{\\{([1-9]\\d*)\\}\\}';
 
   function languageText() {
@@ -191,7 +192,7 @@
     var counts = style.animationIterationCount.split(',');
     var longest = 0;
     names.forEach(function (name, index) {
-      if (name !== 'vc-info-aus') return;
+      if (name !== 'vc-modal-ausblenden') return;
       var count = parseFloat(counts[index % counts.length]);
       if (!Number.isFinite(count)) count = 1;
       longest = Math.max(longest, durations[index % durations.length] * count + delays[index % delays.length]);
@@ -208,10 +209,10 @@
     var duration = closeAnimationMs(style);
     if (duration <= 0) { finishClose(dialog); return; }
     var onEnd = function (e) {
-      if (e.target === dialog && e.animationName === 'vc-info-aus') finishClose(dialog);
+      if (e.target === dialog && e.animationName === 'vc-modal-ausblenden') finishClose(dialog);
     };
     var onCancel = function (e) {
-      if (e.target === dialog && e.animationName === 'vc-info-aus') finishClose(dialog);
+      if (e.target === dialog && e.animationName === 'vc-modal-ausblenden') finishClose(dialog);
     };
     dialog.addEventListener('animationend', onEnd);
     dialog.addEventListener('animationcancel', onCancel);

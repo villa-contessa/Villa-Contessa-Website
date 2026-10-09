@@ -1,11 +1,9 @@
 /*!
  * Villa Contessa – Modals & Popups, Version 2.0.0
- * Ergänzt Webflow-Klassen für native dialog-Elemente.
- * Extern als Stylesheet im Head laden, zusammen mit modals-popups.js.
+ * Ergänzt CSS Styles für die Modals / Popups auf unserer Website.
+ * Arbeitet im Zusammenspiel mit unserem Script modals-popups.js.
  */
 
-/* Überarbeitet auf Basis der Claude-Version, 8. Oktober 2026. */
-/* Browser-Standard des dialog-Elements zurücksetzen: volle Fläche wie bisher .modal_popup */
 dialog.modal_popup {
   width: 100%;
   height: 100%;
@@ -16,13 +14,13 @@ dialog.modal_popup {
   padding-top: 0;
   padding-bottom: 0;
   color: inherit;
-  --vc-info-dauer: 0.3s; /* Dauer für sanftes Ein- und Ausblenden – hier anpassen */
+  --vc-modal-animationsdauer: 0.3s; /* Dauer für sanftes Ein- und Ausblenden – hier anpassen */
 }
 
 /* .modal_popup steht in Webflow auf display: none – geöffnet wird über das [open]-Attribut */
 dialog.modal_popup[open] {
   display: flex;
-  animation: vc-info-ein var(--vc-info-dauer) ease-out;
+  animation: vc-modal-einblenden var(--vc-modal-animationsdauer) ease-out;
 }
 dialog.modal_popup:not([open]) {
   display: none;
@@ -30,7 +28,7 @@ dialog.modal_popup:not([open]) {
 
 /* Sanftes Ausblenden: das Script setzt .is-closing und schließt nach dem Ende der Animation */
 dialog.modal_popup.is-closing {
-  animation: vc-info-aus var(--vc-info-dauer) ease-in forwards;
+  animation: vc-modal-ausblenden var(--vc-modal-animationsdauer) ease-in forwards;
 }
 
 /* Die Abdunklung liefert bereits die Hintergrundfarbe von .modal_popup */
@@ -58,10 +56,10 @@ html:has(dialog.modal_popup[open]) {
   outline-offset: 3px;
 }
 
-@keyframes vc-info-ein {
+@keyframes vc-modal-einblenden {
   from { opacity: 0; }
 }
-@keyframes vc-info-aus {
+@keyframes vc-modal-ausblenden {
   to { opacity: 0; }
 }
 
