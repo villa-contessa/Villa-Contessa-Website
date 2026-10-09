@@ -18,7 +18,7 @@
   function createInfoButton(n) {
     const span = document.createElement('span');
     // Attribute exakt wie gewünscht, mit dynamischer Zahl:
-    span.setAttribute('aria-roledescription', 'aria-roledescription');
+    span.setAttribute('aria-roledescription', 'open-modal-trigger');
     span.className = 'modal_info-button';
     span.setAttribute('aria-label', 'Mehr Informationen');
     span.setAttribute('role', 'button');
