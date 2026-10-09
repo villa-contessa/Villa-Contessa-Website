@@ -1,8 +1,7 @@
 /*!
- * Villa Contessa – Modals & Popups, Version 1.2.0
+ * Villa Contessa – Modals & Popups, Version 2.0.0
  * Ergänzt Webflow-Klassen für native dialog-Elemente.
  * Extern als Stylesheet im Head laden, zusammen mit modals-popups.js.
- * Bestehende Finsweet-Modals auf div-Elementen bleiben unberührt.
  */
 
 /* Überarbeitet auf Basis der Claude-Version, 8. Oktober 2026. */
@@ -45,7 +44,7 @@ html:has(dialog.modal_popup[open]) {
 }
 
 /* Bestehende Webflow-Klassen haben Vorrang vor diesem Button-Grundstil. */
-:where(button[data-vc-info-open], button[data-vc-modal-open], button[data-vc-info-close]) {
+:where(button[data-vc-modal-open], button[data-vc-modal-close]) {
   appearance: none;
   border: 0;
   padding: 0;
@@ -54,7 +53,7 @@ html:has(dialog.modal_popup[open]) {
   font: inherit;
   cursor: pointer;
 }
-:where(button[data-vc-info-open], button[data-vc-modal-open], button[data-vc-info-close]):focus-visible {
+:where(button[data-vc-modal-open], button[data-vc-modal-close]):focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }

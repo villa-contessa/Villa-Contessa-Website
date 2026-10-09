@@ -1,27 +1,27 @@
 /*!
- * Villa Contessa – Modals & Popups, Version 1.2.0
- * Native Dialoge mit CMS-Platzhaltern und normalen Buttons/Links.
- * JavaScript extern mit defer laden; modals-popups.css separat im Head.
+ * Villa Contessa – Modals & Popups, Version 2.0.0
+ * Mit diesem Script stellen wir Modals / Popups für unserer Website bereit.
+ * Hierbei verwenden wir das native Dialog-Element (HTML 5).
+ * Unser Modal- / Popup-Lösung kann sowohl für CMS-Inhalte als auch für normale, statische Inhalte verwendet werden.
  *
- * CMS: data-vc-element="angebotspaket" als gemeinsamer Bereich;
- * Rich Text: data-vc-element="cms-angebotspakete-dialog-liste";
- * dialog: data-vc-info="1" passend zu {{1}} und "Zusätzliche Infos 1".
+ * Gemeinsame Gruppe: data-vc-modal-group="true" auf dem umgebenden Element.
+ * CMS-Rich-Text: data-vc-modal-cms-richtext="true"; Platzhalter exakt {{1}}.
+ * Dialog: data-vc-modal-name="1"; Inhalt an das gewünschte CMS-Feld binden.
  *
- * Normale Auslöser: gemeinsamer Wrapper mit data-vc-modal-scope="";
- * Button/Link: data-vc-modal-open="spa-info"; dialog: data-vc-modal="spa-info".
- * Namen dürfen in unterschiedlichen Bereichen wiederholt werden.
- * Schließen: data-vc-info-close="button"; Hintergrund: data-vc-info-close="cover".
+ * Button/Link: data-vc-modal-open="1" oder "spa-details";
+ * der Dialog trägt denselben Wert als data-vc-modal-name.
+ * Namen dürfen in unterschiedlichen Gruppen wiederholt werden.
+ * Schließen: data-vc-modal-close="true"; Hintergrund: data-vc-modal-backdrop="true".
  * Alle Dialoge behalten die Webflow-Klasse modal_popup.
  */
 (function () {
   'use strict';
 
-  var SEL_PAKET = '[data-vc-element="angebotspaket"]';
-  var SEL_SCOPE = SEL_PAKET + ', [data-vc-modal-scope], .w-dyn-item';
-  var SEL_MANUAL_DIALOG = 'dialog[data-vc-modal]';
-  // Bestehende und neue CMS-Markierungen werden unterstützt.
-  var SEL_LISTE = '[data-vc-element="cms-angebotspakete-liste"], [data-vc-element="cms-angebotspakete-dialog-liste"]';
-  var SEL_DIALOG = 'dialog[data-vc-info]';
+  var SEL_SCOPE = '[data-vc-modal-group]';
+  var SEL_LISTE = '[data-vc-modal-cms-richtext]';
+  var SEL_DIALOG = 'dialog[data-vc-modal-name]';
+  var SEL_CLOSE = '[data-vc-modal-close]';
+  var SEL_BACKDROP = '[data-vc-modal-backdrop]';
   if (window.VCInfoDialogs) return;
   var SKIP_TAGS = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, CODE: 1, KBD: 1, PRE: 1, A: 1, BUTTON: 1 };
 
@@ -31,7 +31,7 @@
 
   function languageText() {
     return (document.documentElement.lang || 'de').toLowerCase().indexOf('en') === 0
-      ? { open: 'More information', close: 'Close', dialog: 'Further information' }
+      ? { open: 'More information', close: 'Close', dialog: 'More information' }
       : { open: 'Mehr Informationen', close: 'Schließen', dialog: 'Weitere Informationen' };
   }
   var TEXT = languageText();
@@ -40,7 +40,7 @@
   var openerOfDialog = new WeakMap(); // <dialog>    -> zuletzt benutzter Info-Button
   var pendingClose = new WeakMap();   // <dialog>    -> laufendes Ausblenden
   var dialogsOfScope = new WeakMap();
-  var manualDialogsOfScope = new WeakMap();
+  var automaticOpeners = new WeakSet();
   var preparedDialogs = new WeakSet();
   var automaticDialogLabels = new WeakSet();
 
@@ -48,10 +48,11 @@
 
   /* ---------- Dialoge ---------- */
 
-  // Ein Dialog gilt als leer, wenn das CMS-Feld „Zusätzliche Infos n" nicht befüllt ist.
+  // Prüft CMS-Rich-Text auf tatsächlichen Inhalt, unabhängig von Collection und Feldname.
   function isEmptyDialog(dialog) {
     var richTexts = dialog.querySelectorAll('.w-richtext');
-    if (!richTexts.length) return true;
+    // Statische oder an Plain-Text-Felder gebundene Inhalte benötigen keinen Rich Text.
+    if (!richTexts.length) return false;
     for (var i = 0; i < richTexts.length; i++) {
       var rt = richTexts[i];
       var hasContent =
@@ -96,10 +97,10 @@
       dialog.setAttribute('aria-label', TEXT.dialog);
       automaticDialogLabels.add(dialog);
     }
-    var closers = dialog.querySelectorAll('[data-vc-info-close]');
+    var closers = dialog.querySelectorAll(SEL_CLOSE + ', ' + SEL_BACKDROP);
     for (var i = 0; i < closers.length; i++) {
       var el = closers[i];
-      if (el.getAttribute('data-vc-info-close') === 'cover') {
+      if (el.hasAttribute('data-vc-modal-backdrop')) {
         el.setAttribute('aria-hidden', 'true');
         continue;
       }
@@ -119,7 +120,7 @@
       el.removeAttribute('tabindex');
       el.setAttribute('aria-label', TEXT.close);
     }
-    var initialFocus = dialog.querySelector('[autofocus]') || dialog.querySelector('button[data-vc-info-close="button"]');
+    var initialFocus = dialog.querySelector('[autofocus]') || dialog.querySelector('button' + SEL_CLOSE);
     if (initialFocus) initialFocus.setAttribute('autofocus', '');
     // Escape: statt sofort zu schließen ebenfalls sanft ausblenden
     dialog.addEventListener('keydown', function (event) { keepTabInDialog(dialog, event); });
@@ -225,7 +226,7 @@
   /* ---------- Platzhalter -> Info-Buttons ---------- */
 
   function scopeOf(el) {
-    // Auch verschachtelte Collection Items bekommen ihren eigenen Bereich.
+    // Die nächste markierte Gruppe bestimmt die Zuordnung, auch bei Verschachtelungen.
     return el.closest(SEL_SCOPE);
   }
 
@@ -236,9 +237,10 @@
     button.setAttribute('aria-haspopup', 'dialog');
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-label', TEXT.open);
-    button.setAttribute('data-vc-info-open', dialog.getAttribute('data-vc-info'));
+    button.setAttribute('data-vc-modal-open', dialog.getAttribute('data-vc-modal-name'));
     button.textContent = 'i';
     dialogOfButton.set(button, dialog);
+    automaticOpeners.add(button);
     return button;
   }
 
@@ -258,7 +260,7 @@
       if (!dialog) {
         // Kein (befüllter) Dialog: Platzhalter entfernen, damit kein toter Button entsteht
         if (before) frag.appendChild(document.createTextNode(before));
-        warn('Platzhalter {{' + number + '}} ohne befülltes Zusatzinfo-Feld.', scope);
+        warn('Platzhalter {{' + number + '}} ohne verfügbaren Dialog in seiner Gruppe.', scope);
         continue;
       }
       // Geschütztes Leerzeichen: der Button rutscht nie allein in die nächste Zeile
@@ -278,11 +280,11 @@
   }
 
   function processContainer(container) {
-    if (container.hasAttribute('data-vc-info-ready')) return;
+    if (container.hasAttribute('data-vc-modal-ready')) return;
     var scope = scopeOf(container);
-    if (!scope) { warn('Leistungsbeschreibung ohne Angebotsblock. Keine seitenweite Ersatzsuche.', container); return; }
+    if (!scope) { warn('CMS-Rich-Text ohne gemeinsame Modal-Gruppe.', container); return; }
     if (!dialogsOfScope.has(scope)) return;
-    container.setAttribute('data-vc-info-ready', '');
+    container.setAttribute('data-vc-modal-ready', '');
     var test = new RegExp(PLACEHOLDER_SRC);
     var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
     var nodes = [];
@@ -300,56 +302,59 @@
   }
 
 
-  /* ---------- Normale Buttons und Links ---------- */
+  /* ---------- Gruppen und gemeinsame Dialog-Zuordnung ---------- */
 
-  function prepareManualTriggers() {
-    var scopes = new Set();
-    document.querySelectorAll(SEL_MANUAL_DIALOG).forEach(function (dialog) {
-      var scope = scopeOf(dialog);
-      if (!scope) { warn('Dialog ohne gemeinsamen Modal-Bereich.', dialog); return; }
-      scopes.add(scope);
+  function prepareGroups() {
+    document.querySelectorAll(SEL_DIALOG).forEach(function (dialog) {
+      if (!scopeOf(dialog)) warn('Dialog ohne gemeinsame Modal-Gruppe.', dialog);
     });
-    scopes.forEach(function (scope) {
-      manualDialogsOfScope.delete(scope);
+    document.querySelectorAll(SEL_SCOPE).forEach(function (scope) {
+      dialogsOfScope.delete(scope);
       var map = new Map();
       var invalid = false;
-      var dialogs = Array.from(scope.querySelectorAll(SEL_MANUAL_DIALOG)).filter(function (dialog) {
+      var dialogs = Array.from(scope.querySelectorAll(SEL_DIALOG)).filter(function (dialog) {
         return scopeOf(dialog) === scope;
       });
       dialogs.forEach(function (dialog) {
-        var name = dialog.getAttribute('data-vc-modal');
-        if (!/^[A-Za-z][A-Za-z0-9_-]*$/.test(name) || map.has(name)) {
+        var name = dialog.getAttribute('data-vc-modal-name');
+        // Positive Nummer für CMS-Platzhalter oder lesbarer Name für normale Auslöser.
+        if (!/^([1-9]\d*|[A-Za-z][A-Za-z0-9_-]*)$/.test(name) || map.has(name)) {
           invalid = true;
-          warn('Ungültiger oder doppelter Modal-Name innerhalb eines Bereichs.', dialog);
+          warn('Ungültiger oder doppelter Dialogname innerhalb einer Modal-Gruppe.', dialog);
         }
         map.set(name, dialog);
       });
       if (invalid) return;
       dialogs.forEach(function (dialog) {
-        var name = dialog.getAttribute('data-vc-modal');
-        if (!dialog.querySelector('[data-vc-info-close="button"]')) {
+        var name = dialog.getAttribute('data-vc-modal-name');
+        if (isEmptyDialog(dialog)) { dialog.remove(); map.delete(name); return; }
+        if (!dialog.querySelector(SEL_CLOSE)) {
           map.delete(name);
           warn('Dialog ohne Schließen-Button.', dialog);
           return;
         }
         if (!preparedDialogs.has(dialog)) prepareDialog(dialog);
         if (automaticDialogLabels.has(dialog)) dialog.setAttribute('aria-label', TEXT.dialog);
-        dialog.querySelectorAll('button[data-vc-info-close="button"]').forEach(function (button) {
+        dialog.querySelectorAll('button' + SEL_CLOSE).forEach(function (button) {
           button.setAttribute('aria-label', TEXT.close);
         });
       });
-      manualDialogsOfScope.set(scope, map);
+      dialogsOfScope.set(scope, map);
     });
+  }
+
+  function prepareOpeners() {
     document.querySelectorAll('[data-vc-modal-open]').forEach(function (opener) {
       dialogOfButton.delete(opener);
       var scope = scopeOf(opener);
-      var map = scope && manualDialogsOfScope.get(scope);
+      var map = scope && dialogsOfScope.get(scope);
       var dialog = map && map.get(opener.getAttribute('data-vc-modal-open'));
       if (!dialog || !preparedDialogs.has(dialog)) return;
       dialogOfButton.set(opener, dialog);
       opener.setAttribute('aria-haspopup', 'dialog');
       opener.setAttribute('aria-expanded', dialog.open ? 'true' : 'false');
-      // Der vorhandene sichtbare Text bzw. aria-label des Auslösers bleibt erhalten.
+      if (automaticOpeners.has(opener)) opener.setAttribute('aria-label', TEXT.open);
+      // Eigene Beschriftungen normaler Buttons und Links bleiben erhalten.
     });
   }
 
@@ -361,72 +366,26 @@
       warn('Dieser Browser unterstützt keine nativen modalen Dialoge.', document.documentElement);
       return;
     }
-    prepareManualTriggers();
-    var containers = document.querySelectorAll(SEL_LISTE);
-    var seen = new Set();
-    for (var j = 0; j < containers.length; j++) {
-      var scope = scopeOf(containers[j]);
-      if (!scope || seen.has(scope)) continue;
-      seen.add(scope);
-      dialogsOfScope.delete(scope);
-      var dialogs = Array.from(scope.querySelectorAll(SEL_DIALOG)).filter(function (dialog) { return scopeOf(dialog) === scope; });
-      if (!dialogs.length) continue; // Noch nicht umgestellte Angebotsblöcke bleiben unverändert.
-      var map = new Map();
-      var invalid = false;
-      dialogs.forEach(function (dialog) {
-        var number = dialog.getAttribute('data-vc-info');
-        if (!/^[1-9]\d*$/.test(number) || map.has(number)) {
-          invalid = true;
-          warn('Ungültige oder doppelte Zusatzinfo-Nummer innerhalb eines Angebots.', dialog);
-        }
-        map.set(number, dialog);
-      });
-      if (invalid) continue;
-      dialogs.forEach(function (dialog) {
-        var number = dialog.getAttribute('data-vc-info');
-        if (isEmptyDialog(dialog)) { dialog.remove(); map.delete(number); return; }
-        if (!dialog.querySelector('[data-vc-info-close="button"]')) {
-          map.delete(number);
-          warn('Dialog ohne Schließen-Button. Der zugehörige Infobutton wird ausgelassen.', dialog);
-          return;
-        }
-        if (!preparedDialogs.has(dialog)) prepareDialog(dialog);
-      });
-      dialogsOfScope.set(scope, map);
-    }
-    for (var k = 0; k < containers.length; k++) {
-      processContainer(containers[k]);
-      var buttons = containers[k].querySelectorAll('[data-vc-info-open]');
-      for (var b = 0; b < buttons.length; b++) {
-        if (dialogOfButton.has(buttons[b])) buttons[b].setAttribute('aria-label', TEXT.open);
-      }
-      var scope = scopeOf(containers[k]);
-      if (!scope) continue;
-      scope.querySelectorAll(SEL_DIALOG).forEach(function (dialog) {
-        if (!preparedDialogs.has(dialog)) return;
-        if (automaticDialogLabels.has(dialog)) dialog.setAttribute('aria-label', TEXT.dialog);
-        dialog.querySelectorAll('button[data-vc-info-close="button"]').forEach(function (button) {
-          button.setAttribute('aria-label', TEXT.close);
-        });
-      });
-    }
+    prepareGroups();
+    document.querySelectorAll(SEL_LISTE).forEach(function (container) { processContainer(container); });
+    prepareOpeners();
   }
 
   // Erneute Initialisierung ist möglich, wenn später weitere CMS-Blöcke ergänzt werden.
-  window.VCInfoDialogs = { version: '1.2.0', init: init };
+  window.VCInfoDialogs = { version: '2.0.0', init: init };
 
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (!t || !t.closest) return;
-    var opener = t.closest('[data-vc-info-open], [data-vc-modal-open]');
+    var opener = t.closest('[data-vc-modal-open]');
     if (opener && dialogOfButton.has(opener)) { e.preventDefault(); openDialog(opener); return; }
-    var closer = t.closest('[data-vc-info-close]');
+    var closer = t.closest(SEL_CLOSE + ', ' + SEL_BACKDROP);
     if (closer) {
       var dialog = closer.closest('dialog');
       if (dialog && preparedDialogs.has(dialog)) { e.preventDefault(); closeDialog(dialog); }
       return;
     }
-    if (t.matches(SEL_DIALOG + ', ' + SEL_MANUAL_DIALOG) && preparedDialogs.has(t)) closeDialog(t);
+    if (t.matches(SEL_DIALOG) && preparedDialogs.has(t)) closeDialog(t);
   });
 
   // Die Webflow-Vorschau kann CMS-Blöcke nach DOMContentLoaded einsetzen.
@@ -446,8 +405,8 @@
       if (record.target.nodeType === 1 && record.target.closest(SEL_LISTE)) return true;
       return Array.from(record.addedNodes).some(function (node) {
         return node.nodeType === 1 &&
-          (node.matches(SEL_LISTE + ', ' + SEL_DIALOG + ', ' + SEL_MANUAL_DIALOG + ', [data-vc-modal-open]') ||
-            node.querySelector(SEL_LISTE + ', ' + SEL_DIALOG + ', ' + SEL_MANUAL_DIALOG + ', [data-vc-modal-open]'));
+          (node.matches(SEL_SCOPE + ', ' + SEL_LISTE + ', ' + SEL_DIALOG + ', [data-vc-modal-open]') ||
+            node.querySelector(SEL_SCOPE + ', ' + SEL_LISTE + ', ' + SEL_DIALOG + ', [data-vc-modal-open]'));
       });
     });
     if (relevant) scheduleInit();
