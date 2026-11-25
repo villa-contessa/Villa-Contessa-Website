@@ -1,6 +1,6 @@
 /* Dieses Script verwenden wir für folgende Zwecke:
 - Um Info-Icons in den Richtext einer CMS Collection Page einzufügen (Platzhalter im Format {{1}} bis {{12}} werden durch ein Info-Icon / beim Klick auf das Icon wird ein Popup mit den Informationen angezeigt)
-- Alle <strong>-Tags im Rich-Text werden mit der Class "text-weight-bold" versehen 
+- Alle <strong>-Tags im Rich-Text werden mit der Class "text-weight-bold-old-v2" versehen 
 */
 (function () {
   // === Einstellungen ===
@@ -72,7 +72,7 @@
   function addStrongClass(container) {
     container.querySelectorAll('strong').forEach((el) => {
       if (!isInsideSkipTag(el, container)) {
-        el.classList.add('text-weight-bold');
+        el.classList.add('text-weight-bold-old-v2');
       }
     });
   }

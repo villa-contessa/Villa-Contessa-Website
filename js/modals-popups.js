@@ -298,7 +298,7 @@
     // wie bisher in cms-richtext.js: <strong> erhält die Client-First-Klasse
     var strongs = container.querySelectorAll('strong');
     for (var i = 0; i < strongs.length; i++) {
-      if (!isInsideSkipTag(strongs[i], container)) strongs[i].classList.add('text-weight-bold');
+      if (!isInsideSkipTag(strongs[i], container)) strongs[i].classList.add('text-weight-bold-old-v2');
     }
   }
 
