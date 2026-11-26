@@ -1,9 +1,51 @@
 /* Make text look crisper and more legible in all browsers */
+/* (entspricht dem Client-First-v3-Block, ergänzt um text-rendering) */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* =============================== */
+
+/* Client-First v3 – Global Styles
+   Übernommen aus dem Cloneable (Komponente „Global / Styles“, Embed global-styles_default),
+   Stand 26.11.2026. Farben und Größen kommen aus den Webflow-Variablen
+   (Theme > System, Sizes > Focus) und werden dort gepflegt, nicht hier. */
+
+/* Fokus-Rahmen für Tastatur-Navigation (ersetzt die bisherige Regel mit #4d65ff) */
+[tabindex]:not([tabindex='-1']):focus-visible,
+button:focus-visible,
+a:focus-visible,
+[role='button']:focus-visible,
+input[type='file']:focus-visible {
+  outline: var(--_sizes---focus--width, 2px) solid var(--_theme---system--focus-state, #005fcc);
+  outline-offset: var(--_sizes---focus--offset, 2px);
+}
+
+/* Farbe beim Markieren von Text */
+::selection {
+  background-color: var(--_theme---system--selection-background);
+  color: var(--_theme---system--selection-text);
+  text-shadow: none;
+}
+::-moz-selection {
+  background-color: var(--_theme---system--selection-background);
+  color: var(--_theme---system--selection-text);
+  text-shadow: none;
+}
+
+/* Kein Abstand über dem ersten und unter dem letzten Element im Rich Text.
+   Vorerst nur auf v3-Seiten (.page-wrapper); alte Seiten nutzen .page-wrapper-old-v2
+   und bleiben unverändert. Präfix entfernen, sobald alle Seiten auf v3 sind. */
+.page-wrapper .w-richtext > :not(div):first-child,
+.page-wrapper .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+.page-wrapper .w-richtext > :last-child,
+.page-wrapper .w-richtext ul li:last-child,
+.page-wrapper .w-richtext ol li:last-child {
+  margin-bottom: 0 !important;
 }
 
 /* =============================== */
@@ -27,16 +69,10 @@ a,
   font-size: inherit;
 }
 
-/* Focus state style for keyboard navigation for the focusable elements */
-*[tabindex]:focus-visible,
-  input[type="file"]:focus-visible {
-   outline: 0.125rem solid #4d65ff;
-   outline-offset: 0.125rem;
-}
-
 /* Remove default Webflow chevron from form select */
 select{
   -webkit-appearance:none;
+  appearance: none;
 }
 
 /* =============================== */
@@ -188,19 +224,6 @@ input::placeholder {
   transition: all 350ms;
 }
 
-/* removes the default spinner from input number fields */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
 .tippy-content {
   padding: 1.35rem;
   font-size: 1rem;
@@ -229,4 +252,4 @@ input[type="number"] {
 button {
   all: unset;
   cursor: pointer;
-} 
+}
