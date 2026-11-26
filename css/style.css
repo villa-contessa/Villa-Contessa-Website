@@ -23,18 +23,6 @@ input[type='file']:focus-visible {
   outline-offset: var(--_sizes---focus--offset, 2px);
 }
 
-/* Farbe beim Markieren von Text */
-::selection {
-  background-color: var(--_theme---system--selection-background);
-  color: var(--_theme---system--selection-text);
-  text-shadow: none;
-}
-::-moz-selection {
-  background-color: var(--_theme---system--selection-background);
-  color: var(--_theme---system--selection-text);
-  text-shadow: none;
-}
-
 /* Kein Abstand über dem ersten und unter dem letzten Element im Rich Text.
    Vorerst nur auf v3-Seiten (.page-wrapper); alte Seiten nutzen .page-wrapper-old-v2
    und bleiben unverändert. Präfix entfernen, sobald alle Seiten auf v3 sind. */
